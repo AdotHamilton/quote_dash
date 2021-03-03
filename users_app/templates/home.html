@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success!</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">  
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+    <div class="d-flex justify-content-between m-1 border-bottom border-dark">
+        <h3>Welcome {{ user.first_name }}</h3>
+        <div>
+            <a href='/myaccount/{{ user.id }}'>Edit My Account</a>
+            <a href='/logout' class='btn btn-primary'>Logout</a>
+        </div>
+    </div>
+    <div class='container d-flex justify-content-between'>
+        <div id="quotes" class='w-50 p-3'>
+            <h3>Quotes</h3>
+            <ul id='quote_list' >
+                {% for quote in quotes %}
+                <li class='border border-dark p-1 m-1'>
+                    <p>{{ quote.author }}: "{{ quote.quote }}"</p>
+                    <p>Posted by <a href='/user/{{ quote.uploaded_by.id }}'>{{ quote.uploaded_by.first_name }} {{ quote.uploaded_by.last_name }}</a></p> 
+                    <p>
+                        {{ quote.likes.all|length }} people like this {% if user not in quote.likes.all %}<a href='/quotes/like/{{quote.id}}' class='btn btn-primary'>Like</a>{% endif %}
+                    </p>
+                    {% if user.id == quote.uploaded_by.id %}
+                    <a href='quotes/delete/{{ quote.id }}'>Delete</a>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div id='form-container border border-dark'>
+            <h2>Add Quote:</h2>
+            <form action='/quotes/submit' method="POST">
+            {% csrf_token %}
+                <div class='form-control'>
+                    <label for='author'>Author</label>
+                    <input type='text' name='author' id='author'><br /><br />
+                    <label for='quote'>Quote</label>
+                    <textarea id='quote' name='quote' rows='2' cols='25'></textarea><br />
+                    <input type='submit'>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

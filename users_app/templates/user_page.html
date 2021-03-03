@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Quote Page</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">  
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="d-flex justify-content-between m-3">
+        <h3>{{ user.first_name }} {{user.last_name }}'s Quotes</h3>
+        <div>
+            <a href='/quotes'>Back</a>
+            <a href='/logout' class='btn btn-primary'>Logout</a>
+        </div>
+    </div>
+    <div id='quotes'>
+        <ul id='quote_list'>
+        {% for quote in user.quotes_posted.all %}
+            <li class='border border-dark p-1 m-1'>
+                <p>{{ quote.author }}: " {{ quote.quote }} "</p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
